@@ -5,9 +5,7 @@ please contact max bertolero at mbertolero@me.com for any questions!
 all you need to do is make sure you have the correct path to your bib file and where you store this repo
 then type something like:  %run unbiasedciter -authors 'Maxwell Bertolero Danielle Bassett' -bibfile '/Users/maxwell/Desktop/main.bib' 
 
-
 """
-
 import os
 import pandas as pd
 import tqdm
@@ -27,6 +25,7 @@ parser.add_argument('-bibfile',action='store',dest='bibfile',default='main.bib')
 parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/maxwell/Dropbox/Bertolero_Bassett_Projects/unbiasedciter/')
 parser.add_argument('-method',action='store',dest='method',default='wiki')
 parser.add_argument('-authors',action='store',dest='authors')
+parser.add_argument('-font',action='store',dest='font') # hey, we all have our favorite
 r = parser.parse_args()
 locals().update(r.__dict__)
 bibfile = parse_file(bibfile)
@@ -95,8 +94,8 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 	small_matrix[small_idxs[fa_race],small_idxs[la_race]] +=1
 
 plt.close()
+sns.set(style='white',font=font)
 fig, axes = plt.subplots(ncols=2,nrows=2,figsize=(7.5,6))
-# fig.subplots_adjust(wspace=.5)
 heat = sns.heatmap(citation_matrix,annot=True,ax=axes[0,0])
 axes[0,0].set_ylabel('first author',labelpad=0)  
 heat.set_yticklabels(['white','api','hispanic','black'])

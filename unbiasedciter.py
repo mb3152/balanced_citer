@@ -94,7 +94,6 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 	citation_matrix[matrix_idxs[fa_race],matrix_idxs[la_race]] +=1
 	small_matrix[small_idxs[fa_race],small_idxs[la_race]] +=1
 
-1/0
 plt.close()
 fig, axes = plt.subplots(ncols=2,nrows=2,figsize=(7.5,6))
 # fig.subplots_adjust(wspace=.5)
@@ -131,5 +130,4 @@ axes[1,1].set_ylabel('first author',labelpad=0)
 heat.set_yticklabels(['white','non-white'])
 axes[1,1].set_xlabel('last author',labelpad=0)  
 heat.set_xticklabels(['white','non-white']) 
-
-
+plt.savefig('your_race_citations.pdf')

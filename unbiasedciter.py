@@ -141,5 +141,5 @@ heat.set_xticklabels(['white','poc'])
 
 
 plt.tight_layout()
-1/0
+# 1/0
 plt.savefig('race_citations.pdf')

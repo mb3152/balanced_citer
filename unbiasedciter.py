@@ -92,42 +92,54 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 		fa_race,la_race= r.race.values
 	citation_matrix[matrix_idxs[fa_race],matrix_idxs[la_race]] +=1
 	small_matrix[small_idxs[fa_race],small_idxs[la_race]] +=1
-
+# 1/0
 plt.close()
 sns.set(style='white',font=font)
 fig, axes = plt.subplots(ncols=2,nrows=2,figsize=(7.5,6))
 heat = sns.heatmap(citation_matrix,annot=True,ax=axes[0,0])
 axes[0,0].set_ylabel('first author',labelpad=0)  
-heat.set_yticklabels(['white','api','hispanic','black'])
+heat.set_yticklabels(['white','api','hispanic','black'],rotation=65)
 axes[0,0].set_xlabel('last author',labelpad=0)  
 heat.set_xticklabels(['white','api','hispanic','black']) 
 heat.set_title('# of citations')  
 
+citation_matrix = citation_matrix / np.sum(citation_matrix) 
+
 expected = np.load('/%s/data/expected_matrix_%s.npy'%(homedir,method))
 expected = expected/np.sum(expected)
-expected = expected * np.sum(citation_matrix)
 
-heat = sns.heatmap(citation_matrix-expected,annot=True,ax=axes[0,1])
+percent_overunder = np.ceil( ((citation_matrix - expected) / expected)*100)
+
+heat = sns.heatmap((percent_overunder).astype(int),annot=True,ax=axes[0,1],fmt='g')
 axes[0,1].set_ylabel('first author',labelpad=0)  
-heat.set_yticklabels(['white','api','hispanic','black'])
+heat.set_yticklabels(['white','api','hispanic','black'],rotation=65)
 axes[0,1].set_xlabel('last author',labelpad=0)  
 heat.set_xticklabels(['white','api','hispanic','black']) 
-heat.set_title('# of citations over/under expected')  
+heat.set_title('percentage over/under-citations')
 
+# 1/0
 heat = sns.heatmap(small_matrix,annot=True,ax=axes[1,0])
-axes[1,0].set_ylabel('first author',labelpad=0)  
-heat.set_yticklabels(['white','non-white'])
-axes[1,0].set_xlabel('last author',labelpad=0)  
-heat.set_xticklabels(['white','non-white']) 
+axes[0,0].set_ylabel('first author',labelpad=0)  
+heat.set_yticklabels(['white','poc'])
+axes[0,0].set_xlabel('last author',labelpad=0)  
+heat.set_xticklabels(['white','poc'])
+heat.set_title('# of citations')  
+
+small_matrix = small_matrix / np.sum(small_matrix) 
 
 expected = np.load('/%s/data/expected_small_matrix_%s.npy'%(homedir,method))
 expected = expected/np.sum(expected)
-expected = expected * np.sum(small_matrix)
 
-heat = sns.heatmap(small_matrix-expected,annot=True,ax=axes[1,1])
-axes[1,1].set_ylabel('first author',labelpad=0)  
-heat.set_yticklabels(['white','non-white'])
-axes[1,1].set_xlabel('last author',labelpad=0)  
-heat.set_xticklabels(['white','non-white']) 
+percent_overunder = np.ceil( ((small_matrix - expected) / expected)*100)
+heat.set_title('percentage over/under-citations')
+heat = sns.heatmap((percent_overunder).astype(int),annot=True,ax=axes[1,1],fmt='g')
+axes[0,1].set_ylabel('first author',labelpad=0)  
+heat.set_yticklabels(['white','poc'])
+axes[0,1].set_xlabel('last author',labelpad=0)  
+heat.set_xticklabels(['white','poc'])
+
+
+
 plt.tight_layout()
+1/0
 plt.savefig('race_citations.pdf')

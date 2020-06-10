@@ -119,11 +119,10 @@ heat.set_title('percentage over/under-citations')
 
 # 1/0
 heat = sns.heatmap(small_matrix,annot=True,ax=axes[1,0])
-axes[0,0].set_ylabel('first author',labelpad=0)  
+axes[1,0].set_ylabel('first author',labelpad=0)  
 heat.set_yticklabels(['white','poc'])
-axes[0,0].set_xlabel('last author',labelpad=0)  
+axes[1,0].set_xlabel('last author',labelpad=0)  
 heat.set_xticklabels(['white','poc'])
-heat.set_title('# of citations')  
 
 small_matrix = small_matrix / np.sum(small_matrix) 
 
@@ -131,11 +130,10 @@ expected = np.load('/%s/data/expected_small_matrix_%s.npy'%(homedir,method))
 expected = expected/np.sum(expected)
 
 percent_overunder = np.ceil( ((small_matrix - expected) / expected)*100)
-heat.set_title('percentage over/under-citations')
 heat = sns.heatmap((percent_overunder).astype(int),annot=True,ax=axes[1,1],fmt='g')
-axes[0,1].set_ylabel('first author',labelpad=0)  
+axes[1,1].set_ylabel('first author',labelpad=0)  
 heat.set_yticklabels(['white','poc'])
-axes[0,1].set_xlabel('last author',labelpad=0)  
+axes[1,1].set_xlabel('last author',labelpad=0)  
 heat.set_xticklabels(['white','poc'])
 
 

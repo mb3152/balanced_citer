@@ -20,7 +20,7 @@ import seaborn as sns
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('-bibfile',action='store',dest='bibfile',default='main.bib')
-parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/maxwell/Dropbox/Bertolero_Bassett_Projects/unbiasedciter/')
+parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/maxwell/Documents/GitHub/unbiasedciter/')
 parser.add_argument('-method',action='store',dest='method',default='wiki')
 parser.add_argument('-authors',action='store',dest='authors')
 parser.add_argument('-font',action='store',dest='font',default='Palatino') # hey, we all have our favorite

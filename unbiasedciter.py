@@ -8,7 +8,6 @@ then type something like:
 
 """
 
-gender_key = "RzYtabLemeouQQlJSY"
 import os
 import pandas as pd
 import tqdm
@@ -199,7 +198,7 @@ heat.set_title('percentage of citations')
 
 citation_matrix_sum = citation_matrix / np.sum(citation_matrix) 
 
-expected = np.load('/%s/expected_matrix_wiki.npy'%(homedir))
+expected = np.load('/%s/data/expected_matrix_wiki.npy'%(homedir))
 expected = expected/np.sum(expected)
 
 percent_overunder = np.ceil( ((citation_matrix_sum - expected) / expected)*100)
@@ -212,5 +211,5 @@ heat.set_xticklabels(names,rotation=90)
 heat.set_title('percentage over/under-citations')
 plt.tight_layout()
 
-plt.savefig('race_gender_citations.pdf')
+plt.savefig('/%s/data/race_gender_citations.pdf'%(homedir))
 

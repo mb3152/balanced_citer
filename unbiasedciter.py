@@ -16,6 +16,7 @@ import matplotlib.pylab as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
 import json
+import pickle
 from urllib.request import urlopen
 """
 some uncommon libs 
@@ -32,7 +33,6 @@ except:
 	from pybtex.database import parse_file
 
 import seaborn as sns
-
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -53,34 +53,41 @@ wiki_2_race = {"Asian,GreaterEastAsian,EastAsian":'api', "Asian,GreaterEastAsian
 "GreaterEuropean,WestEuropean,Germanic":'white', "GreaterEuropean,WestEuropean,Hispanic":'hispanic',
 "GreaterEuropean,WestEuropean,Italian":'white', "GreaterEuropean,WestEuropean,Nordic":'white'}
 
+def gender_base():
+	"""
+	for unknown gender, fill with base rates
+	you will never / can't run this (that file is too big to share)
+	"""
+	main_df = pd.read_csv('/%s/data/NewArticleData2019.csv'%(homedir),header=0)
+
+
+	gender_base = {}
+	for year in np.unique(main_df.PY.values):
+		ydf = main_df[main_df.PY==year].AG
+		fa = np.array([x[0] for x in ydf.values])
+		la = np.array([x[1] for x in ydf.values])
+
+		fa_m = len(fa[fa=='M'])/ len(fa[fa!='U'])
+		fa_w = len(fa[fa=='W'])/ len(fa[fa!='U'])
+
+		la_m = len(la[fa=='M'])/ len(la[la!='U'])
+		la_w = len(la[fa=='W'])/ len(la[la!='U'])
+
+		gender_base[year] = [fa_m,fa_w,la_m,la_w]
+
+	gender_base[2020] = [fa_m,fa_w,la_m,la_w]
+
+	with open(homedir + 'gender_base' + '.pkl', 'wb') as f:
+		pickle.dump(gender_base, f, pickle.HIGHEST_PROTOCOL)
+
+
+with open(homedir + 'gender_base' + '.pkl', 'rb') as f:
+	gender_base =  pickle.load(f)
+
 authors = authors.split(' ')
 print ('first author is %s %s '%(authors[0],authors[1]))
 print ('last author is %s %s '%(authors[2],authors[2]))
 print ("we don't count these")
-
-
-"""
-for unknown gender, fill with base rates
-"""
-main_df = pd.read_csv('/%s/data/NewArticleData2019.csv'%(homedir),header=0)
-prs = np.zeros((main_df.shape[0],8,8))
-
-gender_base = {}
-for year in np.unique(main_df.PY.values):
-	ydf = main_df[main_df.PY==year].AG
-	fa = np.array([x[0] for x in ydf.values])
-	la = np.array([x[1] for x in ydf.values])
-
-	fa_m = len(fa[fa=='M'])/ len(fa[fa!='U'])
-	fa_w = len(fa[fa=='W'])/ len(fa[fa!='U'])
-
-	la_m = len(la[fa=='M'])/ len(la[la!='U'])
-	la_w = len(la[fa=='W'])/ len(la[la!='U'])
-
-	gender_base[year] = [fa_m,fa_w,la_m,la_w]
-
-gender_base[2020] = [fa_m,fa_w,la_m,la_w]
-
 
 citation_matrix = np.zeros((8,8))
 matrix_idxs = {'white_m':0,'api_m':1,'hispanic_m':2,'black_m':3,'white_f':4,'api_f':5,'hispanic_f':6,'black_f':7}

@@ -9,4 +9,4 @@ USAGE:
 python unbiasedciter.py -authors 'Maxwell Bertolero Danielle Bassett' -bibfile '/path/to/my/main.bib' -gender_key 'my_gender_key'
 
 This will create:
-![alt text](https://github.com/mb3152/unbiasedciter/race_gender_citations.png?raw=true)
+![Image](https://github.com/mb3152/unbiasedciter/race_gender_citations.png?raw=true)

@@ -186,7 +186,7 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 cmap = sns.diverging_palette(220, 10, as_cmap=True)
 names = ['white_m','api_m','hispanic_m','black_m','white_w','api_w','hispanic_w','black_w']
 plt.close()
-sns.set(style='white',font='Palatino')
+sns.set(style='white',font=font)
 fig, axes = plt.subplots(ncols=2,nrows=1,figsize=(7.5,4))
 axes = axes.flatten()
 plt.sca(axes[0])
@@ -213,3 +213,4 @@ heat.set_title('percentage over/under-citations')
 plt.tight_layout()
 
 plt.savefig('race_gender_citations.pdf')
+

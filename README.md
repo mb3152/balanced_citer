@@ -14,7 +14,7 @@ This will create:
 ![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/race_gender_citations.png?raw=true)
 
 
-We only provide the usage of the wikipedia first and last name model (a) from ethnicolr. This is mostly because the census model (b) that only uses last names very often guesses that a Black author is white (e.g., Smith). 
+We only provide the usage of the wikipedia first and last name model (a) from ethnicolr. This is because the census model (b) that only uses last names very often guesses that a Black author is white. Here is a "confusion" matrix, which measures the model's predictions, during cross validation. The diagonal number are the number of authors who are appropriately classified. The off diagonal entries are the number of errors.
 
 ![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/dazed_and_confused.png?raw=true)
 

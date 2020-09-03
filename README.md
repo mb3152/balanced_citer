@@ -16,6 +16,6 @@ This will create:
 
 We only provide the usage of the wikipedia first and last name model (a) from ethnicolr. This is mostly because the census model (b) that only uses last names very often guesses that a Black author is white (e.g., Smith). 
 
-![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/dazed_and_confused.png?raw=true)
+![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/dazed_and_confused.png?raw=true) 
 
 Moreover, we use probabilities, not binary classifications, so a single author's race, for example, is represented as weights across Asian, Black, Hispanic, and white. As such, this code should provide a sanity check, not a ground truth, about the balance of your refrence lists. The gender and race of authors should be confirmed by hand (e.g., by visting the authors' website) before removing / adding citations. 

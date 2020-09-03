@@ -40,7 +40,7 @@ parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/ma
 parser.add_argument('-method',action='store',dest='method',default='wiki')
 parser.add_argument('-authors',action='store',dest='authors')
 parser.add_argument('-font',action='store',dest='font',default='Palatino') # hey, we all have our favorite
-parser.add_argument('-myKey',action='store',dest='font',default=None) # hey, we all have our favorite
+parser.add_argument('-gender_key',action='store',dest='font',default=None) # hey, we all have our favorite
 r = parser.parse_args()
 locals().update(r.__dict__)
 bibfile = parse_file(bibfile)

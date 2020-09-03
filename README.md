@@ -13,7 +13,7 @@ This will create:
 ![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/race_gender_citations.png?raw=true)
 
 
-We only provide the usage of the wikipedia first and last name model from ethnicolr. This is mostly because the census model that only uses last names very often guesses that a Black author is with (e.g., Smith). 
+We only provide the usage of the wikipedia first and last name model (a) from ethnicolr. This is mostly because the census model (b) that only uses last names very often guesses that a Black author is with (e.g., Smith). 
 
 ![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/dazed_and_confused.png?raw=true)
 

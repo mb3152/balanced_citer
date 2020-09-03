@@ -1,5 +1,5 @@
 # Unbiased Citer
-This python script calculates the race and gender (probabilistically) of the first and last authors for papers in your citation list (in the form of a .bib file) and compares your list to expected distributions based on a model that accounts for paper characteristics (e.g., author location, author seniority, journal, et cetera.) unrelated to race and gender. 
+This python script guesses the race and gender (probabilistically) of the first and last authors for papers in your citation list (in the form of a .bib file) and compares your list to expected distributions based on a model that accounts for paper characteristics (e.g., author location, author seniority, journal, et cetera.) unrelated to race and gender. 
 
 Requirements:
 (1) ethnicolr and pybtex; when you run the code, it will install then on the fly for you if you do not have them.
@@ -11,3 +11,10 @@ python unbiasedciter.py -authors 'Maxwell Bertolero Danielle Bassett' -bibfile '
 
 This will create:
 ![Image](https://raw.githubusercontent.com//mb3152/unbiasedciter/master/data/race_gender_citations.png?raw=true)
+
+
+We only provide the usage of the wikipedia first and last name model from ethnicolr. This is mostly because the census model that only uses last names very often guesses that a Black author is with (e.g., Smith). 
+
+![Image](https://raw.githubusercontent.com//mb3152/unbiasedciter/master/data/dazed_and_confused.png?raw=true)
+
+Moreover, we use probabilities, not binary classifications, so a single author's race, for example, is represented as weights across Asian, Black, Hispanic, and white. As such, this code should provide a sanity check, not a ground truth, about the balance of your refrence lists. The gender and race of authors should be confirmed by hand (e.g., by visting the authors' website) before removing / adding citations. 

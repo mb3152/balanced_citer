@@ -1,4 +1,4 @@
-# Unbiased Citer
+# Balanced Citer
 This python script guesses the race and gender (probabilistically) of the first and last authors for papers in your citation list (in the form of a .bib file) and compares your list to expected distributions based on a model that accounts for paper characteristics (e.g., author location, author seniority, journal, et cetera.) unrelated to race and gender. 
 
 Requirements:

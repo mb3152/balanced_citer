@@ -40,7 +40,7 @@ parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/ma
 parser.add_argument('-method',action='store',dest='method',default='wiki')
 parser.add_argument('-authors',action='store',dest='authors')
 parser.add_argument('-font',action='store',dest='font',default='Palatino') # hey, we all have our favorite
-parser.add_argument('-gender_key',action='store',dest='font',default=None) # hey, we all have our favorite
+parser.add_argument('-gender_key',action='store',dest='gender_key',default=None) # hey, we all have our favorite
 r = parser.parse_args()
 locals().update(r.__dict__)
 bibfile = parse_file(bibfile)
@@ -76,11 +76,11 @@ def gender_base():
 
 	gender_base[2020] = [fa_m,fa_w,la_m,la_w]
 
-	with open(homedir + 'gender_base' + '.pkl', 'wb') as f:
+	with open(homedir + '/data/gender_base' + '.pkl', 'wb') as f:
 		pickle.dump(gender_base, f, pickle.HIGHEST_PROTOCOL)
 
 
-with open(homedir + 'gender_base' + '.pkl', 'rb') as f:
+with open(homedir + 'data/gender_base' + '.pkl', 'rb') as f:
 	gender_base =  pickle.load(f)
 
 authors = authors.split(' ')

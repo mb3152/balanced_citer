@@ -85,7 +85,7 @@ with open(homedir + 'data/gender_base' + '.pkl', 'rb') as f:
 
 authors = authors.split(' ')
 print ('first author is %s %s '%(authors[0],authors[1]))
-print ('last author is %s %s '%(authors[2],authors[2]))
+print ('last author is %s %s '%(authors[2],authors[3]))
 print ("we don't count these")
 
 citation_matrix = np.zeros((8,8))

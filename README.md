@@ -18,4 +18,4 @@ We only provide the usage of the wikipedia first and last name model (a) from et
 
 ![Image](https://raw.githubusercontent.com//mb3152/balanced_citer/master/data/dazed_and_confused.png?raw=true)
 
-Moreover, we use probabilities, not binary classifications, so a single author's race, for example, is represented as weights across Asian, Black, Hispanic, and white. As such, this code should provide a sanity check, not a ground truth, about the balance of your refrence lists. The gender and race of authors should be confirmed by hand (e.g., by visting the authors' website) before removing / adding citations. 
+Moreover, we use probabilities, not binary classifications, so a single author's race, for example, is represented as weights across Asian, Black, Hispanic, and white. As such, this code should provide a sanity check / red flag for unbalanced refrences lists, not a ground truth.

@@ -275,4 +275,4 @@ plt.savefig('/%s/data/race_gender_citations_%s.pdf'%(homedir,bibname))
 
 
 
-
+paper_df.to_csv('/%s/data/predictions_%s.csv'%(homedir,bibname))

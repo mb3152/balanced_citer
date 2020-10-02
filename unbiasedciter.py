@@ -35,11 +35,11 @@ import seaborn as sns
 
 import argparse
 parser = argparse.ArgumentParser()
-parser.add_argument('-bibfile',action='store',dest='bibfile',default='example.bib')
+parser.add_argument('-bibfile',action='store',dest='bibfile',default='/data/example.bib')
 parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/maxwell/Documents/GitHub/unbiasedciter/')
 parser.add_argument('-method',action='store',dest='method',default='wiki')
 parser.add_argument('-authors',action='store',dest='authors')
-parser.add_argument('-font',action='store',dest='font',default='Palatino') # hey, we all have our favorite
+parser.add_argument('-font',action='store',dest='font',default='Helvetica') # hey, we all have our favorite
 parser.add_argument('-gender_key',action='store',dest='gender_key',default=None) # hey, we all have our favorite
 r = parser.parse_args()
 locals().update(r.__dict__)
@@ -87,7 +87,7 @@ with open(homedir + 'data/gender_base' + '.pkl', 'rb') as f:
 authors = authors.split(' ')
 print ('first author is %s %s '%(authors[0],authors[1]))
 print ('last author is %s %s '%(authors[2],authors[3]))
-print ("we don't count these")
+print ("we don't count these, but check the predictions file to ensure your names did not slip through!")
 
 citation_matrix = np.zeros((8,8))
 matrix_idxs = {'white_m':0,'api_m':1,'hispanic_m':2,'black_m':3,'white_f':4,'api_f':5,'hispanic_f':6,'black_f':7}
@@ -128,20 +128,20 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 	except:la_fname = la.last_names[0] #for people like Plato
 	la_lname = la.last_names[0]
 
-	if fa_fname == authors[0]:
-		if fa_lname == authors[1]:
+	if fa_fname.lower().strip() == authors[0].lower().strip():
+		if fa_lname.lower().strip()  == authors[1].lower().strip() :
 			continue
 
-	if fa_fname == authors[2]:
-		if fa_lname == authors[3]:
+	if fa_fname.lower().strip()  == authors[2].lower().strip() :
+		if fa_lname.lower().strip()  == authors[3].lower().strip() :
 			continue
 
-	if la_fname == authors[0]:
-		if la_lname == authors[1]:
+	if la_fname.lower().strip()  == authors[0].lower().strip() :
+		if la_lname.lower().strip()  == authors[1].lower().strip() :
 			continue
 	
-	if la_fname == authors[2]:
-		if la_lname == authors[3]:
+	if la_fname.lower().strip()  == authors[2].lower().strip() :
+		if la_lname.lower().strip()  == authors[3].lower().strip() :
 			continue
 
 	fa_fname = fa_fname.encode("ascii", errors="ignore").decode() 
@@ -151,12 +151,12 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 
 	names = [{'lname': fa_lname,'fname':fa_fname}]
 	fa_df = pd.DataFrame(names,columns=['fname','lname'])
-	fa_race = pred_wiki_name(fa_df,'fname','lname').values[0][3:]
+	fa_race = pred_wiki_name(fa_df,'lname','fname').values[0][3:]
 	fa_race = [np.sum(fa_race[white]),np.sum(fa_race[asian]),np.sum(fa_race[hispanic]),np.sum(fa_race[black])]
 	
 	names = [{'lname': la_lname,'fname':la_fname}]
 	la_df = pd.DataFrame(names,columns=['fname','lname'])
-	la_race = pred_wiki_name(la_df,'fname','lname').values[0][3:]
+	la_race = pred_wiki_name(la_df,'lname','fname').values[0][3:]
 	la_race = [np.sum(la_race[white]),np.sum(la_race[asian]),np.sum(la_race[hispanic]),np.sum(la_race[black])]
 
 	url = "https://gender-api.com/get?key=" + gender_key + "&name=%s" %(fa_fname)
@@ -271,8 +271,4 @@ heat.set_title('percentage over/under-citations')
 plt.tight_layout()
 
 plt.savefig('/%s/data/race_gender_citations_%s.pdf'%(homedir,bibname))
-
-
-
-
 paper_df.to_csv('/%s/data/predictions_%s.csv'%(homedir,bibname))

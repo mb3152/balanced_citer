@@ -4,7 +4,7 @@ please contact max bertolero at mbertolero@me.com for any questions!
 all you need to do is make sure you have the correct path to your bib file and where you store this repo
 then type something like:  
 
-%run unbiasedciter -authors 'Maxwell Bertolero Danielle Bassett' -bibfile '/Users/maxwell/Desktop/main.bib' -gender_key 'key from gender-api.com'
+%run unbiasedciter -authors 'Maxwell Bertolero Danielle Bassett' -bibfile '/Users/maxwell/Documents/GitHub/data/example.bib' -gender_key 'key from gender-api.com'
 
 """
 
@@ -21,7 +21,7 @@ from urllib.request import urlopen
 some uncommon libs 
 """
 try: 
-	from ethnicolr import census_ln, pred_census_ln,pred_wiki_name
+	from ethnicolr import pred_fl_reg_name
 except:
 	os.system('pip install ethnicolr')
 	from ethnicolr import census_ln, pred_census_ln,pred_wiki_name
@@ -37,21 +37,14 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('-bibfile',action='store',dest='bibfile',default='/data/example.bib')
 parser.add_argument('-homedir',action='store',dest='homedir',default='//Users/maxwell/Documents/GitHub/unbiasedciter/')
-parser.add_argument('-method',action='store',dest='method',default='wiki')
+parser.add_argument('-method',action='store',dest='method',default='florida')
 parser.add_argument('-authors',action='store',dest='authors')
-parser.add_argument('-font',action='store',dest='font',default='Helvetica') # hey, we all have our favorite
+parser.add_argument('-bibname',action='store',dest='bibname',default='mydata')
+parser.add_argument('-font',action='store',dest='font',default='Palatino') # hey, we all have our favorite
 parser.add_argument('-gender_key',action='store',dest='gender_key',default=None) # hey, we all have our favorite
 r = parser.parse_args()
 locals().update(r.__dict__)
-bibname = bibfile.split('.')[0]
 bibfile = parse_file(bibfile)
-
-wiki_2_race = {"Asian,GreaterEastAsian,EastAsian":'api', "Asian,GreaterEastAsian,Japanese":'api',
-"Asian,IndianSubContinent":'api', "GreaterAfrican,Africans":'black', "GreaterAfrican,Muslim":'black',
-"GreaterEuropean,British":'white', "GreaterEuropean,EastEuropean":'white',
-"GreaterEuropean,Jewish":'white', "GreaterEuropean,WestEuropean,French":'white',
-"GreaterEuropean,WestEuropean,Germanic":'white', "GreaterEuropean,WestEuropean,Hispanic":'hispanic',
-"GreaterEuropean,WestEuropean,Italian":'white', "GreaterEuropean,WestEuropean,Nordic":'white'}
 
 def gender_base():
 	"""
@@ -148,16 +141,16 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 	fa_lname = fa_lname.encode("ascii", errors="ignore").decode()
 	la_fname = la_fname.encode("ascii", errors="ignore").decode() 
 	la_lname = la_lname.encode("ascii", errors="ignore").decode() 
-
+	# 1/0
 	names = [{'lname': fa_lname,'fname':fa_fname}]
 	fa_df = pd.DataFrame(names,columns=['fname','lname'])
-	fa_race = pred_wiki_name(fa_df,'lname','fname').values[0][3:]
-	fa_race = [np.sum(fa_race[white]),np.sum(fa_race[asian]),np.sum(fa_race[hispanic]),np.sum(fa_race[black])]
+	asian,hispanic,black,white = pred_fl_reg_name(fa_df,'lname','fname').values[0][-4:]
+	fa_race = [white,asian,hispanic,black]
 	
 	names = [{'lname': la_lname,'fname':la_fname}]
 	la_df = pd.DataFrame(names,columns=['fname','lname'])
-	la_race = pred_wiki_name(la_df,'lname','fname').values[0][3:]
-	la_race = [np.sum(la_race[white]),np.sum(la_race[asian]),np.sum(la_race[hispanic]),np.sum(la_race[black])]
+	asian,hispanic,black,white = pred_fl_reg_name(la_df,'lname','fname').values[0][-4:]
+	la_race = [white,asian,hispanic,black]
 
 	url = "https://gender-api.com/get?key=" + gender_key + "&name=%s" %(fa_fname)
 	response = urlopen(url)
@@ -225,7 +218,7 @@ databases may not, in every case, be indicative of gender identity and b) it can
 Second, we obtained predicted racial/ethnic category of the first and last author of each reference by databases that store the probability of a \
 first and last name being carried by an author of color (7,8). By this measure (and excluding self-citations), our references contain AA% author of \
 color (first)/author of color(last), WA% white author/author of color, AW% author of color/white author, and WW% white author/white author. This method \
-is limited in that a) names and Wikipedia profiles used to make the predictions may not be indicative of racial/ethnic identity, and b) \
+is limited in that a) names and Florida Voter Data to make the predictions may not be indicative of racial/ethnic identity, and b) \
 it cannot account for Indigenous and mixed-race authors, or those who may face differential biases due to the ambiguous racialization or ethnicization of their names.  \
 We look forward to future work that could help us to better understand how to support equitable practices in science."
 
@@ -257,14 +250,14 @@ heat.set_title('percentage of citations')
 
 citation_matrix_sum = citation_matrix / np.sum(citation_matrix) 
 
-expected = np.load('/%s/data/expected_matrix_wiki.npy'%(homedir))
+expected = np.load('/%s/data/expected_matrix_florida.npy'%(homedir))
 expected = expected/np.sum(expected)
 
 percent_overunder = np.ceil( ((citation_matrix_sum - expected) / expected)*100)
 plt.sca(axes[1])
 heat = sns.heatmap(np.around(percent_overunder,2),annot=True,ax=axes[1],fmt='g',annot_kws={"size": 8},vmax=50,vmin=-50,cmap=cmap)
 axes[1].set_ylabel('',labelpad=0)  
-heat.set_yticklabels([''])
+heat.set_yticklabels('')
 axes[1].set_xlabel('last author',labelpad=1)  
 heat.set_xticklabels(names,rotation=90) 
 heat.set_title('percentage over/under-citations')

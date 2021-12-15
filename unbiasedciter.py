@@ -51,7 +51,7 @@ def gender_base():
 	for unknown gender, fill with base rates
 	you will never / can't run this (that file is too big to share)
 	"""
-	main_df = pd.read_csv('/%s/data/NewArticleData2019.csv'%(homedir),header=0)
+	main_df = pd.read_csv('%s/data/NewArticleData2019.csv'%(homedir),header=0)
 
 
 	gender_base = {}
@@ -74,7 +74,7 @@ def gender_base():
 		pickle.dump(gender_base, f, pickle.HIGHEST_PROTOCOL)
 
 
-with open(homedir + 'data/gender_base' + '.pkl', 'rb') as f:
+with open(homedir + '/data/gender_base' + '.pkl', 'rb') as f:
 	gender_base =  pickle.load(f)
 
 authors = authors.split(' ')
@@ -144,12 +144,12 @@ for paper in tqdm.tqdm(bibfile.entries,total=len(bibfile.entries)):
 	# 1/0
 	names = [{'lname': fa_lname,'fname':fa_fname}]
 	fa_df = pd.DataFrame(names,columns=['fname','lname'])
-	asian,hispanic,black,white = pred_fl_reg_name(fa_df,'lname','fname').values[0][-4:]
+	asian,hispanic,black,white = pred_fl_reg_name(fa_df,'lname','fname').values[0][[4, 8, 12, 16]]
 	fa_race = [white,asian,hispanic,black]
 	
 	names = [{'lname': la_lname,'fname':la_fname}]
 	la_df = pd.DataFrame(names,columns=['fname','lname'])
-	asian,hispanic,black,white = pred_fl_reg_name(la_df,'lname','fname').values[0][-4:]
+	asian,hispanic,black,white = pred_fl_reg_name(la_df,'lname','fname').values[0][[4, 8, 12, 16]]
 	la_race = [white,asian,hispanic,black]
 
 	url = "https://gender-api.com/get?key=" + gender_key + "&name=%s" %(fa_fname)
@@ -250,7 +250,7 @@ heat.set_title('percentage of citations')
 
 citation_matrix_sum = citation_matrix / np.sum(citation_matrix) 
 
-expected = np.load('/%s/data/expected_matrix_florida.npy'%(homedir))
+expected = np.load('%s/data/expected_matrix_florida.npy'%(homedir))
 expected = expected/np.sum(expected)
 
 percent_overunder = np.ceil( ((citation_matrix_sum - expected) / expected)*100)
@@ -263,5 +263,11 @@ heat.set_xticklabels(names,rotation=90)
 heat.set_title('percentage over/under-citations')
 plt.tight_layout()
 
-plt.savefig('/%s/data/race_gender_citations_%s.pdf'%(homedir,bibname))
-paper_df.to_csv('/%s/data/predictions_%s.csv'%(homedir,bibname))
+print('Saving to %s/data/race_gender_citations_%s.pdf'%(homedir,bibname))
+plt.savefig('%s/data/race_gender_citations_%s.pdf'%(homedir,bibname))
+
+print('Saving to %s/data/predictions_%s.csv'%(homedir,bibname))
+paper_df.to_csv('%s/data/predictions_%s.csv'%(homedir,bibname))
+
+print("Finished!")
+
